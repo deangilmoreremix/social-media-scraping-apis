@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Submagic Affiliate Intelligence</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body { background: #080808; font-family: system-ui, sans-serif; }
+  .glow { box-shadow: 0 0 40px rgba(99, 102, 241, 0.12); }
+  .glow-text { text-shadow: 0 0 30px rgba(139, 92, 246, 0.35); }
+  .pulse { animation: pr 1.6s ease-out infinite; }
+  @keyframes pr {
+    0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.5); }
+    70% { box-shadow: 0 0 0 10px rgba(139, 92, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0); }
+  }
+  textarea:focus { outline: none; box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.4); }
+  pre { white-space: pre-wrap; word-break: break-word; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+  .skeleton {
+    background: linear-gradient(90deg, #1a1a1a 25%, #2a2a2a 50%, #1a1a1a 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .img-reveal { animation: imgIn 0.6s ease forwards; opacity: 0; }
+  @keyframes imgIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .card-enter { animation: cardIn 0.4s ease forwards; opacity: 0; }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fi 0.4s ease forwards; opacity: 0; }
+  @keyframes fi {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .dots span { animation: blink 1.4s infinite both; }
+  .dots span:nth-child(2) { animation-delay: .2s; }
+  .dots span:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0; }
+    40% { opacity: 1; }
+  }
+  video, audio { width: 100%; border-radius: 8px; margin-top: 12px; outline: none; }
+  @media (max-width: 640px) {
+    h1 { font-size: 2rem !important; }
+    header { padding: 12px 16px !important; }
+    main { padding: 24px 16px !important; }
+  }
+</style>
+</head>
+<body class="min-h-screen text-white">
+<header class="border-b border-white/5 px-8 py-5 flex items-center justify-between sticky top-0 bg-black/80 backdrop-blur z-10">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center pulse">
+      <span class="text-white font-black text-base">⚡</span>
+    </div>
+    <span class="font-black text-xl tracking-widest">SUBMAGIC</span>
+    <span class="text-xs px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 ml-1 font-semibold">AI Affiliate Intelligence</span>
+  </div>
+  <span class="text-xs text-white/25 font-mono"><span class="hidden md:inline">GPT-5.4 · Apify · 3,268 APIs</span></span>
+</header>
+
+<main class="max-w-4xl mx-auto px-6 py-14">
+  <!-- Hero Section -->
+  <div class="text-center mb-14">
+    <h1 class="text-5xl font-black tracking-tight leading-tight mb-5 glow-text">
+      Find the perfect<br/>
+      <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">affiliate materials</span><br/>for every creator.
+    </h1>
+    <p class="text-white/35 text-lg">Analyze · Match · Recommend · Score — all powered by GPT-5.4.</p>
+  </div>
+
+  <!-- Powered By -->
+  <div class="mb-10">
+    <p class="text-center text-xs font-bold text-white/25 uppercase tracking-widest mb-4">Powered by</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <span class="px-4 py-2 rounded-full border border-indigo-400/30 bg-indigo-400/5 text-indigo-300 text-xs font-mono">⚡ GPT-5.4 — AI Analysis</span>
+      <span class="px-4 py-2 rounded-full border border-purple-400/30 bg-purple-400/5 text-purple-300 text-xs font-mono">🌐 Apify — Social Scraping</span>
+      <span class="px-4 py-2 rounded-full border border-pink-400/30 bg-pink-400/5 text-pink-300 text-xs font-mono">📊 3,268 Social APIs</span>
+    </div>
+  </div>
+
+  <!-- Input Section -->
+  <div class="bg-white/[0.03] border border-white/10 rounded-2xl p-6 mb-8 glow">
+    <div class="flex items-center justify-between mb-3">
+      <label class="block text-xs font-bold text-white/35 uppercase tracking-widest">Creator Profile URL</label>
+    </div>
+    
+    <textarea id="creator-url" rows="2" 
+      placeholder="e.g., https://instagram.com/username or https://tiktok.com/@username"
+      class="w-full bg-transparent text-white/90 text-base resize-none rounded-xl border border-white/10 p-4 placeholder-white/20 transition-all"></textarea>
+    
+    <div class="flex items-center justify-between mt-4 flex-wrap gap-3">
+      <!-- Platform Selection -->
+      <div class="flex flex-wrap gap-2">
+        <span class="text-xs text-white/20 font-mono mr-1">Platform:</span>
+        <button onclick="setPlatform('instagram')" id="platform-instagram" class="platform-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-pink-400/40 hover:text-pink-300 transition-all">📷 Instagram</button>
+        <button onclick="setPlatform('tiktok')" id="platform-tiktok" class="platform-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-pink-400/40 hover:text-pink-300 transition-all">🎵 TikTok</button>
+        <button onclick="setPlatform('youtube')" id="platform-youtube" class="platform-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-pink-400/40 hover:text-pink-300 transition-all">🎥 YouTube</button>
+        <button onclick="setPlatform('twitter')" id="platform-twitter" class="platform-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-pink-400/40 hover:text-pink-300 transition-all">🐦 Twitter</button>
+      </div>
+      
+      <!-- Tone Selection -->
+      <div class="flex flex-wrap gap-2 items-center">
+        <span class="text-xs text-white/20 font-mono mr-1">Approach:</span>
+        <button id="tone-professional" onclick="setTone('professional')" class="tone-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-indigo-400/40 hover:text-indigo-300 transition-all">💼 Professional</button>
+        <button id="tone-casual" onclick="setTone('casual')" class="tone-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-indigo-400/40 hover:text-indigo-300 transition-all">🎉 Casual</button>
+        <button id="tone-educational" onclick="setTone('educational')" class="tone-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-indigo-400/40 hover:text-indigo-300 transition-all">📚 Educational</button>
+        <button id="tone-direct" onclick="setTone('direct')" class="tone-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-indigo-400/40 hover:text-indigo-300 transition-all">🎯 Direct</button>
+      </div>
+      
+      <!-- Sample Creators -->
+      <div class="flex flex-wrap gap-2 items-center mt-3 w-full">
+        <span class="text-xs text-white/20 font-mono mr-1">Try samples:</span>
+        <button onclick="useSample('instagram', 'productivity_guru')" class="text-xs text-white/30 hover:text-indigo-400 px-3 py-1.5 rounded-lg border border-white/10 hover:border-indigo-400/30 transition-all">📷 @productivity_guru</button>
+        <button onclick="useSample('tiktok', 'viral_content_tips')" class="text-xs text-white/30 hover:text-indigo-400 px-3 py-1.5 rounded-lg border border-white/10 hover:border-indigo-400/30 transition-all">🎵 @viral_content_tips</button>
+        <button onclick="useSample('youtube', 'techreviewer_pro')" class="text-xs text-white/30 hover:text-indigo-400 px-3 py-1.5 rounded-lg border border-white/10 hover:border-indigo-400/30 transition-all">🎥 @techreviewer_pro</button>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="flex gap-2 mt-4 w-full justify-end">
+        <button id="stop-btn" onclick="stopAnalysis()" class="hidden px-5 py-3 rounded-xl font-bold text-sm border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-all">⏹ Stop</button>
+        <button id="btn" onclick="runAnalysis()" class="px-8 py-3 rounded-xl font-bold text-sm tracking-wide bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 transition-all active:scale-95">⚡ Analyze Creator</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress Bar -->
+  <div id="progress" class="hidden mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <div class="w-2.5 h-2.5 rounded-full bg-indigo-400 pulse"></div>
+      <span id="plabel" class="text-sm text-white/55">Analyzing creator<span class="dots"><span>.</span><span>.</span><span>.</span></span>
+    </div>
+    <div class="h-0.5 bg-white/5 rounded-full overflow-hidden">
+      <div id="pbar" class="h-full bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full transition-all duration-700" style="width:0%"></div>
+    </div>
+    <div class="flex justify-between mt-2 text-xs text-white/20 font-mono">
+      <span id="pt-PROFILE">PROFILE</span>
+      <span id="pt-ANALYSIS">ANALYSIS</span>
+      <span id="pt-MATERIALS">MATERIALS</span>
+      <span id="pt-STRATEGY">STRATEGY</span>
+    </div>
+  </div>
+
+  <!-- Status Banner -->
+  <div id="status-banner" class="hidden mb-4 p-4 rounded-xl border border-indigo-400/30 bg-indigo-400/5 text-center text-indigo-400 font-mono font-bold text-sm"></div>
+
+  <!-- Results Grid -->
+  <div id="grid" class="space-y-6 hidden"></div>
+
+  <!-- Footer -->
+  <div id="footer" class="hidden mt-10 p-5 rounded-xl border border-white/5 bg-white/[0.02] flex items-center justify-between flex-wrap gap-4">
+    <div>
+      <p class="text-xs text-white/30 mb-1">Analysis ID</p>
+      <p id="cid" class="text-sm font-mono text-indigo-400"></p>
+      <p id="elapsed" class="text-xs text-white/20 mt-1"></p>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="downloadReport()" class="text-xs px-5 py-2 rounded-lg border border-indigo-400/30 text-indigo-400 hover:bg-indigo-400/10 transition-all">📥 Download PDF</button>
+      <button onclick="resetUI()" class="text-xs px-5 py-2 rounded-lg border border-white/10 text-white/40 hover:text-white hover:border-white/30 transition-all">⚡ New Analysis</button>
+    </div>
+  </div>
+</main>
+
+<!-- Campaign Score Card (Fixed Position) -->
+<div id="score-card" style="display:none; position:fixed; bottom:24px; right:24px; z-index:100; width:300px; background:linear-gradient(135deg,#0d1117,#111827); border:1px solid rgba(139,92,246,0.3); border-radius:20px; padding:20px; box-shadow:0 0 40px rgba(139,92,246,0.15)">
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px">
+    <div>
+      <div style="color:#818cf8; font-size:12px; font-weight:700; letter-spacing:2px">✦ CAMPAIGN SCORE</div>
+      <div style="color:rgba(255,255,255,0.3); font-size:10px; margin-top:2px">Powered by GPT-5.4</div>
+    </div>
+    <button onclick="document.getElementById('score-card').style.display='none'" style="color:rgba(255,255,255,0.3); background:none; border:none; cursor:pointer; font-size:16px">✕</button>
+  </div>
+  <div style="text-align:center; margin-bottom:16px">
+    <div id="score-global" style="font-size:48px; font-weight:900; background:linear-gradient(135deg,#818cf8,#a78bfa); -webkit-background-clip:text; -webkit-text-fill-color:transparent">0</div>
+    <div style="color:rgba(255,255,255,0.3); font-size:10px; letter-spacing:2px; text-transform:uppercase">Global Score / 100</div>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:12px">
+    <div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:4px"><span style="color:rgba(255,255,255,0.6); font-size:11px; font-weight:600">⚡ Audience Match</span><span id="score-audience-val" style="color:#818cf8; font-size:11px; font-weight:700">0/100</span></div>
+      <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden"><div id="score-audience-bar" style="height:100%; width:0%; background:linear-gradient(90deg,#6366f1,#818cf8); border-radius:3px; transition:width 1.2s cubic-bezier(0.4,0,0.2,1)"></div></div>
+    </div>
+    <div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:4px"><span style="color:rgba(255,255,255,0.6); font-size:11px; font-weight:600">◈ Content Fit</span><span id="score-content-val" style="color:#a78bfa; font-size:11px; font-weight:700">0/100</span></div>
+      <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden"><div id="score-content-bar" style="height:100%; width:0%; background:linear-gradient(90deg,#8b5cf6,#a78bfa); border-radius:3px; transition:width 1.4s cubic-bezier(0.4,0,0.2,1)"></div></div>
+    </div>
+    <div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:4px"><span style="color:rgba(255,255,255,0.6); font-size:11px; font-weight:600">📊 Conversion</span><span id="score-conversion-val" style="color:#c084fc; font-size:11px; font-weight:700">0/100</span></div>
+      <div style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden"><div id="score-conversion-bar" style="height:100%; width:0%; background:linear-gradient(90deg,#a855f7,#c084fc); border-radius:3px; transition:width 1.6s cubic-bezier(0.4,0,0.2,1)"></div></div>
+    </div>
+  </div>
+  <div id="score-label" style="margin-top:14px; text-align:center; font-size:11px; color:rgba(255,255,255,0.3); font-style:italic"></div>
+</div>
+
+<footer class="text-center py-6 text-white/15 text-xs font-mono border-t border-white/5 mt-10">
+  © 2026 Submagic Affiliate Intelligence — Built with GPT-5.4 · Apify · Next.js
+</footer>
+
+<script>
+const COLORS = {
+  PROFILE: { bg: "bg-indigo-500/10", border: "border-indigo-500/20", tag: "text-indigo-300 bg-indigo-500/20", icon: "👤", glow: "rgba(99,102,241,0.15)" },
+  ANALYSIS: { bg: "bg-purple-500/10", border: "border-purple-500/20", tag: "text-purple-300 bg-purple-500/20", icon: "🔍", glow: "rgba(139,92,246,0.15)" },
+  MATERIALS: { bg: "bg-pink-500/10", border: "border-pink-500/20", tag: "text-pink-300 bg-pink-500/20", icon: "📦", glow: "rgba(236,72,153,0.15)" },
+  STRATEGY: { bg: "bg-emerald-500/10", border: "border-emerald-500/20", tag: "text-emerald-300 bg-emerald-500/20", icon: "🎯", glow: "rgba(16,185,129,0.15)" }
+};
+
+const SAMPLES = {
+  instagram: { username: "productivity_guru", followers: 45000, engagement: 3.2, themes: ["productivity", "social_media_tips", "lifestyle"] },
+  tiktok: { username: "viral_content_tips", followers: 125000, engagement: 8.5, themes: ["viral_tips", "content_creation"] },
+  youtube: { username: "techreviewer_pro", followers: 85000, engagement: 4.8, themes: ["tech_reviews", "productivity_tools"] },
+  twitter: { username: "tech_thoughts", followers: 35000, engagement: 2.1, themes: ["tech_thoughts", "ai_tools"] }
+};
+
+const ORDER = ["PROFILE", "ANALYSIS", "MATERIALS", "STRATEGY"];
+let done = 0;
+let cardMap = {};
+let abortController = null;
+let selectedPlatform = 'instagram';
+let selectedTone = 'professional';
+let analysisData = null;
+
+function useSample(platform, username) {
+  selectedPlatform = platform;
+  setPlatform(platform);
+  document.getElementById("creator-url").value = `https://${platform}.com/${username}`;
+}
+
+function setPlatform(platform) {
+  selectedPlatform = platform;
+  document.querySelectorAll('.platform-btn').forEach(btn => {
+    btn.className = 'platform-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-pink-400/40 hover:text-pink-300 transition-all';
+  });
+  const btn = document.getElementById('platform-' + platform);
+  if (btn) btn.className = 'platform-btn text-xs px-3 py-1.5 rounded-lg border border-pink-500/40 text-pink-300 transition-all';
+}
+
+function setTone(tone) {
+  selectedTone = tone;
+  document.querySelectorAll('.tone-btn').forEach(btn => {
+    btn.className = 'tone-btn text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/30 hover:border-indigo-400/40 hover:text-indigo-300 transition-all';
+  });
+  const btn = document.getElementById('tone-' + tone);
+  if (btn) btn.className = 'tone-btn text-xs px-3 py-1.5 rounded-lg border border-indigo-500/40 text-indigo-300 transition-all';
+}
+
+function resetUI() {
+  document.getElementById("grid").innerHTML = "";
+  ["grid", "footer", "progress", "score-card", "status-banner"].forEach(id => document.getElementById(id).classList.add("hidden"));
+  document.getElementById("creator-url").value = "";
+  done = 0;
+  cardMap = {};
+  ORDER.forEach(s => {
+    const e = document.getElementById("pt-" + s);
+    if (e) e.className = "text-white/20 font-mono";
+  });
+}
+
+function stopAnalysis() {
+  if (abortController) abortController.abort();
+  document.getElementById("plabel").textContent = "Stopped.";
+  document.getElementById("stop-btn").classList.add("hidden");
+  document.getElementById("btn").disabled = false;
+  document.getElementById("btn").textContent = "⚡ Analyze Creator";
+}
+
+function tick(s) {
+  done++;
+  document.getElementById("pbar").style.width = (done / 12 * 100) + "%";
+  document.getElementById("plabel").textContent = "Analyzing [" + s + "]...";
+  const e = document.getElementById("pt-" + s);
+  if (e) e.className = "text-indigo-400 font-mono font-bold";
+}
+
+function createCard(s) {
+  const cfg = COLORS[s];
+  document.getElementById("grid").classList.remove("hidden");
+  const card = document.createElement("div");
+  card.id = "card-" + s;
+  card.className = "card-enter rounded-xl border p-6 " + cfg.bg + " " + cfg.border;
+  card.style.boxShadow = "0 0 30px " + cfg.glow;
+  card.innerHTML = '<div class="flex items-center gap-2 mb-4"><span class="text-lg">' + cfg.icon + '</span><span class="text-xs font-bold px-3 py-1 rounded-full ' + cfg.tag + '">' + s + '</span></div>'
+    + '<div id="text-' + s + '"><div class="skeleton h-3 rounded mb-2"></div><div class="skeleton h-3 rounded mb-2 w-5/6"></div><div class="skeleton h-3 rounded w-4/6"></div></div>';
+  document.getElementById("grid").appendChild(card);
+  card.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  cardMap[s] = card;
+}
+
+function fillText(s, content) {
+  const el = document.getElementById("text-" + s);
+  if (!el) return;
+  el.innerHTML = '<div class="text-sm leading-relaxed fade-in space-y-1"><p class="mb-3 text-white/75">' + renderMarkdown(content) + '</p></div>';
+}
+
+function renderMarkdown(text) {
+  return text
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="text-white font-bold">$1</strong>')
+    .replace(/^### (.+)$/gm, '<h3 class="text-sm font-black text-indigo-300 uppercase tracking-widest mt-4 mb-2 border-b border-white/10 pb-1">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 class="text-base font-black text-indigo-200 mt-5 mb-2">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 class="text-lg font-black text-indigo-200 mt-5 mb-3">$1</h1>')
+    .replace(/^\* (.+?):(.+)$/gm, '<li class="mb-3"><span class="font-bold text-indigo-400">$1:</span><span class="text-white/75">$2</span></li>')
+    .replace(/^\* (.+)$/gm, '<li class="mb-2 text-white/80 flex gap-2"><span class="text-indigo-400 mt-0.5">◆</span><span>$1</span></li>')
+    .replace(/^• (.+)$/gm, '<li class="mb-2 text-white/80 flex gap-2"><span class="text-indigo-400 mt-0.5">•</span><span>$1</span></li>')
+    .replace(/^- (.+?):(.+)$/gm, '<li class="mb-3"><span class="font-bold text-indigo-400">$1:</span><span class="text-white/75">$2</span></li>')
+    .replace(/^(.+?):(.{20,})$/gm, '<p class="mb-2"><span class="font-bold text-indigo-300">$1:</span><span class="text-white/75">$2</span></p>')
+    .replace(/\n\n/g, '</p><p class="mb-3 text-white/75 leading-relaxed">')
+    .replace(/\n/g, '<br/>');
+}
+
+async function downloadReport() {
+  const btn = document.querySelector('[onclick="downloadReport()"]');
+  if (btn) { btn.textContent = "⏳ Preparing..."; btn.disabled = true; }
+  
+  try {
+    if (!analysisData) {
+      alert("No analysis data available. Please run an analysis first.");
+      return;
+    }
+    
+    const response = await fetch("/download", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(analysisData)
+    });
+    
+    if (!response.ok) throw new Error("PDF generation failed");
+    
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `affiliate-report-${Date.now()}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    alert("PDF download failed: " + err.message);
+  } finally {
+    if (btn) { btn.textContent = "📥 Download PDF"; btn.disabled = false; }
+  }
+}
+
+async function runAnalysis() {
+  const creatorUrl = document.getElementById("creator-url").value.trim();
+  if (!creatorUrl) return;
+
+  const btn = document.getElementById("btn"), stopBtn = document.getElementById("stop-btn");
+  btn.disabled = true;
+  btn.textContent = "Analyzing...";
+  stopBtn.classList.remove("hidden");
+
+  document.getElementById("grid").innerHTML = "";
+  cardMap = {};
+  ["footer", "score-card", "status-banner"].forEach(id => document.getElementById(id).classList.add("hidden"));
+  document.getElementById("progress").classList.remove("hidden");
+  document.getElementById("pbar").style.width = "0%";
+  document.getElementById("plabel").innerHTML = 'GPT-5.4 is analyzing<span class="dots"><span>.</span><span>.</span><span>.</span></span>';
+  done = 0;
+  ORDER.forEach(s => {
+    const e = document.getElementById("pt-" + s);
+    if (e) e.className = "text-white/20 font-mono";
+  });
+  abortController = new AbortController();
+
+  try {
+    const response = await fetch("/analyze/stream", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        platform: selectedPlatform,
+        username: extractUsername(creatorUrl),
+        tone: selectedTone
+      }),
+      signal: abortController.signal
+    });
+
+    if (!response.ok) throw new Error("API request failed");
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split("\n");
+      buffer = lines.pop() || "";
+
+      for (const line of lines) {
+        if (line.startsWith("event: ")) {
+          const eventType = line.slice(7).trim();
+          continue;
+        }
+        if (line.startsWith("data: ")) {
+          try {
+            const data = JSON.parse(line.slice(6));
+            await handleStreamEvent(data);
+          } catch (e) {}
+        }
+      }
+    }
+  } catch (err) {
+    if (err.name === "AbortError") {
+      document.getElementById("plabel").textContent = "Stopped.";
+    } else {
+      document.getElementById("plabel").innerHTML = '<span class="text-red-400">⚠ Error: ' + err.message + '</span>';
+    }
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "⚡ Analyze Creator";
+    stopBtn.classList.add("hidden");
+    abortController = null;
+  }
+}
+
+function extractUsername(url) {
+  const match = url.match(/@(.{1,30})|\/([^\/]+)\/?$/);
+  return match ? (match[1] || match[2]) : url.replace(/.*\//, "").replace("@", "");
+}
+
+async function handleStreamEvent(data) {
+  const { step, status, data: stepData } = data;
+
+  if (step && status === "complete") {
+    if (!analysisData) analysisData = {};
+    if (step === "PROFILE") analysisData.creator = stepData;
+    if (step === "ANALYSIS") analysisData.analysis = stepData;
+    if (step === "MATERIALS") analysisData.materials = stepData.recommendations;
+    done++;
+    document.getElementById("pbar").style.width = (done / 4 * 100) + "%";
+    document.getElementById("plabel").textContent = `Analyzing [${step}]...`;
+    const e = document.getElementById("pt-" + step);
+    if (e) e.className = "text-indigo-400 font-mono font-bold";
+
+    if (!cardMap[step]) createCard(step);
+
+    if (step === "PROFILE") {
+      fillText("PROFILE", formatProfileData(stepData));
+    } else if (step === "ANALYSIS") {
+      fillText("ANALYSIS", formatAnalysisData(stepData));
+      if (stepData.audience_match !== undefined) {
+        showScore(
+          stepData.audience_match,
+          stepData.content_fit || 0,
+          stepData.conversion_potential || 0
+        );
+      }
+    } else if (step === "MATERIALS") {
+      fillText("MATERIALS", formatMaterialsData(stepData));
+    } else if (step === "STRATEGY") {
+      fillText("STRATEGY", formatStrategyData(stepData));
+    }
+  } else if (data.status === "complete") {
+    document.getElementById("pbar").style.width = "100%";
+    document.getElementById("cid").textContent = `analyze_${Date.now().toString(36)}`;
+    document.getElementById("footer").classList.remove("hidden");
+    document.getElementById("plabel").innerHTML = '<span class="text-indigo-400 font-bold text-base">✓ Analysis Complete</span>';
+
+    const successBanner = document.createElement("div");
+    successBanner.className = "fade-in mt-6 p-5 rounded-xl border border-indigo-400/30 bg-indigo-400/5 text-center";
+    successBanner.innerHTML = '<p class="text-indigo-400 font-black text-xl mb-1">🎉 Analysis Complete</p><p class="text-white/40 text-sm">Creator profile analyzed and materials recommended by GPT-5.4</p>';
+    document.getElementById("grid").appendChild(successBanner);
+    successBanner.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+    try {
+      const audioCtx = new AudioContext();
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      o.connect(g);
+      g.connect(audioCtx.destination);
+      o.frequency.setValueAtTime(520, audioCtx.currentTime);
+      o.frequency.setValueAtTime(660, audioCtx.currentTime + 0.1);
+      g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      o.start();
+      o.stop(audioCtx.currentTime + 0.5);
+    } catch (e) {}
+  }
+}
+
+function formatProfileData(data) {
+  return `**Creator:** @${data.username || "unknown"} on ${data.platform || selectedPlatform}
+
+**Followers:** ${(data.followers || 0).toLocaleString()}
+**Engagement Rate:** ${data.engagement_rate || 0}%
+**Content Themes:** ${(data.content_themes || []).join(", ")}
+
+**Audience Demographics:**
+* Age: ${data.audience_age || "N/A"}
+* Top Locations: ${(data.top_locations || []).join(", ")}
+* Bio: ${data.bio || "N/A"}`;
+}
+
+function formatAnalysisData(data) {
+  const am = data.audience_match || 0;
+  const cf = data.content_fit || 0;
+  const cp = data.conversion_potential || 0;
+  return `**Audience Match Score:** ${am}/100
+${am >= 85 ? "⭐ Excellent match for Submagic" : am >= 70 ? "✅ Good match" : "⚠️ Fair match"}
+
+${data.reasoning || "Analysis complete."}
+
+**Content Fit Score:** ${cf}/100
+${cf >= 85 ? "⭐ Perfect content alignment" : cf >= 70 ? "✅ Strong fit" : "⚠️ Moderate alignment"}
+
+**Conversion Potential:** ${cp}/100
+${cp >= 85 ? "⭐ High conversion expected" : cp >= 70 ? "✅ Good potential" : "⚠️ Needs optimization"}`;
+}
+
+function formatMaterialsData(data) {
+  const recs = data.recommendations || [];
+  if (recs.length === 0) return "No materials matched.";
+
+  const top = recs[0];
+  return `**Top Recommended Material:** ${top.material}
+**Match Score:** ${top.score}/100
+
+*This material aligns perfectly with your content style and audience.*
+
+**Why This Works:**
+${top.reasoning}
+
+**Engagement Tips:**
+${(top.tips || []).map(t => `• ${t}`).join("\n")}
+
+**Best Posting Times:**
+${(top.posting_times || []).join(", ")}`;
+}
+
+function formatStrategyData(data) {
+  const steps = data.next_steps || [];
+  const metrics = data.success_metrics || {};
+  const commission = data.commission_structure || {};
+  return `**Next Steps:**
+
+${steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
+
+**Campaign Success Metrics:**
+* Target engagement rate: ${metrics.target_engagement}
+* Target CTR: ${metrics.target_ctr}
+* Target conversion: ${metrics.target_conversion}
+
+**Recommended Commission Structure:**
+* Base Rate: ${commission.base_rate}
+* Bonus Tiers: ${commission.bonus_tiers}
+
+*Analysis generated by GPT-5.4*`;
+}
+
+async function simulateAnalysis() {
+  const creatorUrl = document.getElementById("creator-url").value;
+  const sample = SAMPLES[selectedPlatform] || SAMPLES.instagram;
+
+  // Step 1: Profile Analysis
+  if (!cardMap["PROFILE"]) createCard("PROFILE");
+  tick("PROFILE");
+  await delay(800);
+  fillText("PROFILE", `
+**Creator:** @${sample.username} on ${selectedPlatform.charAt(0).toUpperCase() + selectedPlatform.slice(1)}
+
+**Followers:** ${sample.followers.toLocaleString()}
+**Engagement Rate:** ${sample.engagement}%
+**Content Themes:** ${sample.themes.map(t => t.replace(/_/g, ' ')).join(', ')}
+
+**Audience Demographics:**
+• Primary Age: ${selectedPlatform === 'tiktok' ? '16-24' : selectedPlatform === 'youtube' ? '25-44' : '18-34'}
+• Top Locations: United States, Brazil, India
+• Interests: Technology, Productivity, Content Creation
+  `);
+  await delay(600);
+
+  // Step 2: Deep Analysis
+  if (!cardMap["ANALYSIS"]) createCard("ANALYSIS");
+  tick("ANALYSIS");
+  await delay(800);
+  const audienceScore = 70 + Math.floor(Math.random() * 20);
+  const contentScore = 65 + Math.floor(Math.random() * 25);
+  const conversionScore = 60 + Math.floor(Math.random() * 25);
+  
+  fillText("ANALYSIS", `
+**Audience Match Score:** ${audienceScore}/100
+${audienceScore >= 85 ? '⭐ Excellent match for Submagic' : audienceScore >= 70 ? '✅ Good match' : '⚠️ Fair match'}
+
+• Your ${sample.engagement}% engagement rate indicates active followers
+• Content themes align well with video editing tools
+• Audience age group (${selectedPlatform === 'tiktok' ? '16-24' : '25-44'}) is prime for productivity tools
+
+**Content Fit Score:** ${contentScore}/100
+${contentScore >= 85 ? '⭐ Perfect content alignment' : contentScore >= 70 ? '✅ Strong fit' : '⚠️ Moderate alignment'}
+
+• Your content style emphasizes ${sample.themes[0].replace(/_/g, ' ')}
+• Tutorial-style content performs well for software tools
+• Regular posting schedule indicates consistency
+
+**Conversion Potential:** ${conversionScore}/100
+${conversionScore >= 85 ? '⭐ High conversion expected' : conversionScore >= 70 ? '✅ Good potential' : '⚠️ Needs optimization'}
+
+• Follower-to-engagement ratio is favorable
+• Audience responds well to recommendations
+• Clear path to affiliate link integration
+  `);
+  await delay(600);
+
+  // Step 3: Materials
+  if (!cardMap["MATERIALS"]) createCard("MATERIALS");
+  tick("MATERIALS");
+  await delay(800);
+  
+  const materials = {
+    instagram: { name: "Instagram Reels Tutorial", score: 92, tips: ["Show before/after demos", "Use trending audio", "Include swipe-up CTA"] },
+    tiktok: { name: "TikTok Demo Hook", score: 95, tips: ["Hook in first 2 seconds", "Quick transformation", "Trending sounds"] },
+    youtube: { name: "YouTube Long Form Review", score: 94, tips: ["Include real examples", "Time saved metrics", "Price point discussion"] },
+    twitter: { name: "Email Outreach Template", score: 85, tips: ["Personalized intro", "Recurring commission highlight", "Easy calendar link"] }
+  };
+  
+  const topMaterial = materials[selectedPlatform] || materials.instagram;
+  
+  fillText("MATERIALS", `
+**Top Recommended Material:** ${topMaterial.name}
+**Match Score:** ${topMaterial.score}/100
+
+*This material aligns perfectly with your content style and audience.*
+
+**Why This Works:**
+• Your ${sample.themes[0].replace(/_/g, ' ')} content naturally fits with Submagic's value proposition
+• Audience demographics indicate high interest in productivity tools
+• Your engagement style supports tutorial/demo content
+
+**Engagement Tips:**
+${topMaterial.tips.map(tip => `• ${tip}`).join('\n')}
+
+**Best Posting Times:**
+• ${selectedPlatform === 'tiktok' ? '7 PM, 9 PM, 11 PM EST' : selectedPlatform === 'youtube' ? '2 PM, 10 AM EST' : '9 AM, 12 PM, 7 PM EST'}
+
+**Estimated Conversion Rate:** ${(Math.random() * 3 + 2).toFixed(1)}%
+  `);
+  await delay(600);
+
+  // Step 4: Strategy
+  if (!cardMap["STRATEGY"]) createCard("STRATEGY");
+  tick("STRATEGY");
+  await delay(800);
+  fillText("STRATEGY", `
+**Next Steps:**
+
+1. **Reach Out** - Contact creator with personalized pitch highlighting ${topMaterial.tips[0].toLowerCase()}
+2. **Provide Access** - Give free Submagic access for testing
+3. **Share Materials** - Send ${topMaterial.name} template and guidelines
+4. **Schedule Check-in** - Follow up after 1 week to discuss results
+
+**Campaign Success Metrics:**
+• Target engagement rate: 4%+ on affiliate posts
+• Target click-through rate: 2-3% on affiliate links
+• Target conversion rate: ${(Math.random() * 3 + 2).toFixed(1)}%
+
+**Recommended Commission Structure:**
+• 30% recurring commission (lifetime)
+• Bonus tiers for high performance
+• Quarterly performance bonuses
+
+*Analysis generated by GPT-5.4 based on creator profile and Submagic affiliate data.*
+  `);
+  await delay(600);
+
+  // Complete
+  document.getElementById("pbar").style.width = "100%";
+  document.getElementById("cid").textContent = `analyze_${Date.now().toString(36)}`;
+  document.getElementById("elapsed").textContent = "";
+  document.getElementById("footer").classList.remove("hidden");
+  stopBtn.classList.add("hidden");
+  document.getElementById("plabel").innerHTML = '<span class="text-indigo-400 font-bold text-base">✓ Analysis Complete</span>';
+
+  // Show success banner
+  const successBanner = document.createElement("div");
+  successBanner.className = "fade-in mt-6 p-5 rounded-xl border border-indigo-400/30 bg-indigo-400/5 text-center";
+  successBanner.innerHTML = '<p class="text-indigo-400 font-black text-xl mb-1">🎉 Analysis Complete</p><p class="text-white/40 text-sm">Creator profile analyzed and materials recommended by GPT-5.4</p>';
+  const grid = document.getElementById("grid");
+  grid.appendChild(successBanner);
+  successBanner.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+  // Show score card
+  showScore(audienceScore, contentScore, conversionScore);
+
+  // Play sound
+  try {
+    const audioCtx = new AudioContext();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.frequency.setValueAtTime(520, audioCtx.currentTime);
+    o.frequency.setValueAtTime(660, audioCtx.currentTime + 0.1);
+    g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+    o.start();
+    o.stop(audioCtx.currentTime + 0.5);
+  } catch (e) {}
+}
+
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function showScore(audience, content, conversion) {
+  const card = document.getElementById("score-card");
+  card.style.display = "block";
+  
+  const global = Math.round((audience + content + conversion) / 3);
+  
+  setTimeout(() => {
+    document.getElementById("score-audience-bar").style.width = audience + "%";
+    document.getElementById("score-content-bar").style.width = content + "%";
+    document.getElementById("score-conversion-bar").style.width = conversion + "%";
+    
+    animateNumber("score-audience-val", audience, "/100");
+    animateNumber("score-content-val", content, "/100");
+    animateNumber("score-conversion-val", conversion, "/100");
+    animateNumber("score-global", global);
+    
+    let label = "Strong candidate for Submagic affiliate partnership";
+    if (global >= 85) label = "⭐ Exceptional match - High priority outreach";
+    else if (global >= 70) label = "✅ Good match - Recommended partnership";
+    else label = "⚠️ Fair match - Consider testing";
+    
+    document.getElementById("score-label").textContent = label;
+  }, 300);
+}
+
+function animateNumber(id, target, suffix = "") {
+  let current = 0;
+  const step = target / 40;
+  const interval = setInterval(() => {
+    current = Math.min(current + step, target);
+    document.getElementById(id).textContent = Math.round(current) + suffix;
+    if (current >= target) clearInterval(interval);
+  }, 30);
+}
+
+// Initialize
+setPlatform('instagram');
+setTone('professional');
+</script>
+</body>
+</html>
